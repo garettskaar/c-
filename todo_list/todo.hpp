@@ -1,14 +1,20 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 class List
 {
-    vector<string> list;
+    private:
+        std::fstream myFile;
+        std::vector<std::string> list;
     public:
-        void addItem(str item);
+        
+        List();
+        ~List();
+        void addItem(std::string item);
         void checkOff(int num);
-        vector<string> getList();
+        std::vector<std::string> getList();
         void saveList();
         void printList();
 };
@@ -23,23 +29,46 @@ List::~List()
     saveList();
 }
 
-List::addItem(str item)
+void List::addItem(std::string item)
 {
-    
+    int itemNum = list.size()+1;
+    std::string newItem = std::to_string(itemNum)+". "+item;
+    list.push_back(newItem);
 }
 
-List::checkOff(int num)
+void List::checkOff(int num)
 {
     
 }
-
-//grab from file...
-List::getList()
+//Grab list from file
+std::vector<std::string> List::getList()
 {
- 
-    return list
+    std::string item = " ";
+    myFile.open("list.txt");
+    if(!myFile.good())
+    {
+        std::cout<< "File failed to open";
+        return list;
+    }
+    while(!myFile.eof())
+    {
+        getline(myFile, item);
+        list.push_back(item); 
+    }
+    list.pop_back();
+    myFile.close();
+    return list;
 }
-List::printList()
+void List::saveList()
 {
     
+}
+void List::printList()
+{
+    std::cout << std::endl;
+    std::vector<std::string>::iterator it;
+    for(it = list.begin(); it != list.end(); it++)
+    {
+        std::cout << *it << std::endl;
+    }
 }
