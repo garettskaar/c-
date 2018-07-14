@@ -9,7 +9,6 @@ class List
         std::fstream myFile;
         std::vector<std::string> list;
     public:
-        
         List();
         ~List();
         void addItem(std::string item);
@@ -17,6 +16,7 @@ class List
         std::vector<std::string> getList();
         void saveList();
         void printList();
+        int getSize();
 };
 
 List::List()
@@ -28,17 +28,20 @@ List::~List()
 {
     saveList();
 }
-
+int List::getSize()
+{
+    return list.size();
+}
 void List::addItem(std::string item)
 {
-    int itemNum = list.size()+1;
-    std::string newItem = std::to_string(itemNum)+". "+item;
-    list.push_back(newItem);
+    list.push_back(item);
 }
 
 void List::checkOff(int num)
 {
-    
+    //Deal with 0 start indexing
+    num = num - 1;
+    list.erase(list.begin() + num);
 }
 //Grab list from file
 std::vector<std::string> List::getList()
@@ -67,8 +70,10 @@ void List::printList()
 {
     std::cout << std::endl;
     std::vector<std::string>::iterator it;
+    int i = 0;
     for(it = list.begin(); it != list.end(); it++)
     {
-        std::cout << *it << std::endl;
+        i++;
+        std::cout << i << ". " << *it << std::endl;
     }
 }
